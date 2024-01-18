@@ -1,0 +1,42 @@
+{% extends "app/base.html" %}
+{% load widget_tweaks %}
+{% block title %}ログイン{% endblock %}
+
+{% block content%}
+
+<div class="card card-auth my-5 mx-auto" id="account_body_area">
+    <div class="card-body" id="account_area">
+        <h5 class="card-title text-center">ログイン</h5>
+        <form method="POST" class="form-auth">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                <p{% if forloop.last %} class="mb-0"{% endif %}>{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="form-label-group">
+                {% render_field form.login class="form-control" placeholder="ユーザー名" %}
+            </div>
+            <div class="form-label-group">
+                {% render_field form.password class="form-control" placeholder="パスワード" %}
+            </div>
+            <div class="text-center">
+                <button class="btn btn-primary" type="submit">ログイン</button>
+            </div>
+        </form>
+        
+        <div class="text-center py-2">
+            <small>
+                <a href="{% url 'password_reset' %}" class="text-muted">パスワード忘れた方はこちら</a>
+            </small>
+        </div>
+        <div class="text-center py-2">
+            <small>
+                <a href="{% url 'account_signup' %}" class="text-muted">まだ登録済みではない方はこちら</a>
+            </small>
+        </div>
+    </div>
+</div>
+{% endblock %}

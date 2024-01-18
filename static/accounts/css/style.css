@@ -1,0 +1,40 @@
+.MyPageManagement {
+    display: block;
+    width: 300px;
+    height: 110px;
+    border: 1px solid #252525;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.MyPageManagement h2,
+p {
+    text-align: center;
+}
+
+.MyPageManagement a {
+    color: #252525;
+    text-decoration: none;
+}
+
+.MyPageManagement:hover {
+    opacity: 0.5;
+}
+
+.MyPageManagement ul {
+    list-style-type: none;
+    display: flex;
+    justify-content: space-between;
+    /* flex-wrap: break-word; */
+    /* justify-content: center; */
+    flex-wrap: wrap;
+    flex-direction: row;
+    flex-flow: row wrap;
+    width: 100%;
+}
+
+.MyPageManagement ul li {
+    margin-bottom: 10px;
+}
+

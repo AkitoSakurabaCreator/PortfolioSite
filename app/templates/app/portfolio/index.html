@@ -1,0 +1,134 @@
+{% extends "app/base.html" %}
+{% load humanize %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="text-center my-5">
+    <div class="search">
+        <form method="POST" action="{% url 'portfolio' %}">
+            {% csrf_token %}
+            <div class="field has-addons has-addons-centered search-area">
+                <div class="control">
+                    <div class="search-box">
+                        <span class="search-box_title">カテゴリー:</span>
+                        {% for category in category_data %}
+                            <label><input type="checkbox" name="categories" value="{{ category.category }}">{{ category.name }}</label>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="search-box">
+                        <span class="search-box_title">タグ:</span>
+                        {% for tag in tag_data %}
+                            <label><input type="checkbox" name="tags" value="{{ tag.tag }}">{{ tag.name }}</label>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="search-words">
+                    <input class="input" type="text" name="search" placeholder="検索したいワード……">
+                    <button type="submit" class="button is-primary">検索する</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% if not item_data%}
+        <p>検索条件に一致するものがありません。</p>
+    {% endif %}
+    <div class="row gap">
+        {% for item in item_data %}
+        <div class="item_list col-lg-3 col-md-6">
+            <div class="card img-thumbnail item_list-detail mb-3">
+                <img src="{{ item.image.all.first.image.url }}" class="card-img-top card-thum">
+                <div class="card-body text-center px-2 py-3">
+                    <h5 class="font-weight-bold text-left">{{ item.title }}</h5>
+                    <p class="item_description text-left">{{ item.description | truncatechars:50 }}</p>
+                    <ul class="flex_row category_evenly">
+                        {% for category in item.categories.all %}
+                            {% if forloop.counter <= 3 %}
+                                <li><a href="{% url 'portfolio_search' category.category %}">{{ category.name }}</li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    <ul class="flex_row tags_evenly">
+                        {% for tag in item.tags.all %}
+                            {% if forloop.counter <= 5 %}
+                                {% comment %} <li><a href="{% url 'portfolio_search' tag.slug %}">{{ tag.name }}</li> {% endcomment %}
+                                <li><a href="{% url 'portfolio_search' tag.tag %}">{{ tag.name }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                    {% comment %} <a href="{% url 'portfolio' item.slug %}" class="stretched-link" target="_blank"></a> {% endcomment %}
+                    <a href="{% url 'portfolio' item.slug %}" class="stretched-link" target="_blank"></a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% if search_data == '' %}
+            {% for item in item_data %}
+                <div class="col-lg-3 col-md-6">
+                    <div class="card img-thumbnail itemlist mb-3">
+                        <img src="{{ item.image.url }}" class="card-img-top card-thum">
+                        <div class="card-body text-center px-2 py-3">
+                            <h5 class="font-weight-bold">{{ item.title }}</h5>
+                            {% for category in item.categories %}
+                            <p class="mb-0 text-secondary">{{ categor.name }}</p>
+                            {% endfor %}
+                            {% for tag in item.tags %}
+                            <p class="mb-0 text-secondary">{{ tag.name }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            {% for item in search_data %}
+                <div class="col-lg-3 col-md-6">
+                    <div class="card img-thumbnail itemlist mb-3">
+                        <img src="{{ item.image.url }}" class="card-img-top card-thum">
+                        <div class="card-body text-center px-2 py-3">
+                            <p class="mb-0 text-secondary">{{ item.category }} | {{item.brand}}</p>
+                            <h5 class="font-weight-bold">{{ item.title }}</h5>
+                            <h4 class="font-weight-bold">{{ item.price | intcomma }}円</h4>
+                            <a href="{% url 'product' item.slug %}" class="stretched-link"></a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+</div>
+
+<div class="paginator">
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        {% if item_data.has_previous %}
+        <a class="pagination-previous" href="?p={{ item_data.previous_page_number }}">前のページへ</a>
+        {% endif %}
+        {% if item_data.has_next %}
+        <a class="pagination-next" href="?p={{ item_data.next_page_number }}">次のページへ</a>
+        {% endif %}
+        <ul class="pagination-list">
+            {% if item_data.has_previous %}
+            {% if item_data.previous_page_number != 1 %}
+            <li><a class="pagination-link" href="?p=1">1</a></li>
+            <li><span class="pagination-ellipsis">&hellip;</span></li>
+            {% endif %}
+            <li><a class="pagination-link"
+                    href="?p={{ item_data.previous_page_number }}">{{ item_data.previous_page_number }}</a></li>
+            {% endif %}
+            <li><a class="pagination-link is-current" href="?p={{ item_data.number }}">{{ item_data.number }}</a></li>
+            {% if item_data.has_next %}
+            <li><a class="pagination-link"
+                    href="?p={{ item_data.next_page_number }}">{{ item_data.next_page_number }}</a></li>
+            {% if item_data.next_page_number != item_data.paginator.num_pages %}
+            <li><span class="pagination-ellipsis">&hellip;</span></li>
+            <li><a class="pagination-link"
+                    href="?p={{ item_data.paginator.num_pages }}">{{ item_data.paginator.num_pages }}</a></li>
+            {% endif %}
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
+{% endblock %}

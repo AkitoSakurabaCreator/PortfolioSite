@@ -1,0 +1,83 @@
+{% extends "app/base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+
+    <div class="card card-profile my-5 mx-auto">
+        <div class="card-body">
+            <h5 class="card-title text-center">プロフィール</h5>
+            <ul>
+                {% for error in form.non_field_errors %}
+                <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <tbody class="profile_table mb-4">
+                    <tr>
+                        <th class="header">プロフィール画像</th>
+                        <td class="data form_wrap form_wrap-2">
+                            {% render_field form.avatar class='form-control' placeholder='プロフィール画像' %}</td>
+                    </tr>
+                    <tr>
+                        <th class="header">名前</th>
+                        <td class="data form_wrap form_wrap-2">
+                            {% render_field form.first_name class='form-control' placeholder='姓' %}
+                            {% render_field form.last_name class='form-control' placeholder='名' %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="header">ニックネーム(任意)</th>
+                        <td class="data form_wrap form_wrap-2">
+                            {% render_field form.nick_name class='form-control' placeholder='ニックネーム' %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="header">ユーザーID</th>
+                        <td class="data form_wrap form_wrap-2">
+                            {% render_field form.user_screen_id class='form-control' placeholder='ユーザID' %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="header">生年月日</th>
+                        <td class="data">
+                            {% comment %} {% bootstrap_javascript jquery='full' %}  {% endcomment %}
+                            {{ form.media }}
+                            {% render_field form.year class='form-control' placeholder='生年月日' %}
+                        </td>
+                    </tr>
+                    <tr>
+                        
+                        <th class="header">コース</th>
+                            <td class="data">
+                                {% render_field form.course class='form-control' placeholder='郵便番号 記入例: 0123456' %}
+                            </td>
+                    </tr>
+                    <tr>
+                        <th class="header">住所</th>
+                        <td class="data">
+                            {% render_field form.address class='form-control p-region p-locality p-street-address p-extended-address' placeholder='住所' %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="header">電話番号</th>
+                        <td class="data">
+                            {% render_field form.tel class='form-control' placeholder='電話番号' %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th class="header">職業(任意)</th>
+                        <td class="data">
+                            {% render_field form.job class='form-control' placeholder='職業' %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="btn mx-auto">
+                <button class="btn btn-lg btn-warning btn-block" type="submit">登録する</button>
+            </div>
+            </form>
+        </div>
+        
+    </div>
+{% endblock %}

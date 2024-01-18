@@ -1,0 +1,74 @@
+{% extends "app/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="card card-profile my-5 mx-auto">
+    <div class="card-body">
+        {% if Switch %}
+        <div class="alert alert-danger" role="alert">
+            <p>注文確定するにはプロフィール入力してください。</p>
+        </div>
+        {% endif %}
+        <h5 class="card-title text-center">プロフィール</h5>
+        <table class="profile_table mb-4">
+            <tbody>
+                <tr>
+                    <th class="header">プロフィール画像</th>
+                    <td class="data" id="avatar_box"><img src="{{ user_data.avatar.url }}" id="avatarimage"></td>
+                </tr>
+                <tr>
+                    <th class="header">名前</th>
+                    <td class="data">{{ user_data.first_name }}{{ user_data.last_name }}</td>
+                </tr>
+                <tr>
+                    <th class="header">ニックネーム(任意)</th>
+                    <td class="data">{{ user_data.nick_name }}</td>
+                </tr>
+                <tr>
+                    <th class="header">ユーザーID</th>
+                    <td class="data">@{{ user_data.user_screen_id }}</td>
+                </tr>
+                <tr>
+                    <th class="header">生年月日</th>
+                    <td class="data">{{ user_data.year}}</td>
+                </tr>
+                <tr>
+                    <th class="header">メールアドレス</th>
+                    <td class="data">{{ user_data.email}}</td>
+                </tr>
+                <tr>
+                    <th class="header">郵便番号</th>
+                    <td class="data">{{ user_data.zipcode}}</td>
+                </tr>
+                <tr>
+                    <th class="header">住所</th>
+                    <td class="data">{{ user_data.address}}</td>
+                </tr>
+                <tr>
+                    <th class="header">建物名</th>
+                    <td class="data">{{ user_data.buildingname}}</td>
+                </tr>
+                <tr>
+                    <th class="header">電話番号</th>
+                    <td class="data">{{ user_data.tel}}</td>
+                </tr>
+                <tr>
+                    <th class="header">職業</th>
+                    <td class="data">{{ user_data.job}}</td>
+                </tr>
+                <tr>
+                    <th class="header">入会日</th>
+                    <td class="data">{{ user_data.created}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="button mx-auto">
+            <a href="{% url 'account_profile_edit' %}" class="btn btn-lg btn-warning btn-block">編集する</a>
+        </div>
+        <div class="button mx-auto">
+            <button class="btn btn-lg btn-danger btn-block" onclick="location.href='{% url 'account_profile_check' %}'">削除する</button>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,131 @@
+{% extends "app/base.html"%}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<div class="my-5">
+    <div class="title_box">
+        <h1>作品詳細</h1>
+        <p></p>
+    </div>
+    <div class="row justify-content-between">
+        <div class="product_image">
+            <div class="swiper" id="swiperIO">
+                <div class="swiper-wrapper">
+                    {% for image in item_data.image.all %}
+                        <div class="swiper-slide"><img src="{{ image.image.url }}" alt=""></div>
+                    {% endfor %}
+                </div>
+                <div class="swiper-button-prev swiper-button-white"></div>
+                <div class="swiper-button-next swiper-button-white"></div>
+                <div class="swiper-pagination swiper-pagination-white"></div>
+            </div>
+        </div>
+        
+        <div class="" id="card_functions">
+            <div class="card">
+                <div class="card-body">
+                    <h3>{{ item_data.title }}</h3>
+                    
+                    <ul class="category">
+                        {% for category in item_data.categories.all %}
+                        <li><a href="{% url 'portfolio_search' category.category %}">{{ category.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                    <ul class="tags">
+                        {% for tag in item_data.tags.all %}
+                        <li><a href="{% url 'portfolio_search' tag.tag %}">{{ tag.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if item_data.url %}
+    <div class="card_bottom">
+        <div class="product_description">
+            <p class="font-weight-bold">参考資料</p>
+            <ul class="flex_column url">
+                {% for url in item_data.url.all %}
+                    <li><a href="{{ url.url }}" target="_blank">{{ url.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+    {% if item_data.movie %}
+    <div class="card_bottom">
+        <div class="product_description">
+            <video src="{{ item_data.movie.url }}" controls="true"></video>
+        </div>
+    </div>
+    {% endif %}
+    <div class="card_bottom">
+        <div class="product_description">
+            <p class="font-weight-bold">作品説明</p>
+            <p>{{ item_data.description|linebreaksbr }}</p>
+        </div>
+    </div>
+</div>
+<script>
+    let mySwiperIO = new Swiper('#swiperIO', {
+        autoplay: {
+            delay: 10000,
+        },
+        loop: true,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+
+    //IntersectionObserver のコールバック関数
+    function callback(entries) {
+        entries.forEach(entry => {
+            if (entry.intersectionRatio >= 1) {
+                // 対象の要素（スライダー）がすべて見えたら再生
+                mySwiperIO.autoplay.start();
+            } else if (entry.intersectionRatio === 0) {
+                // 対象の要素（スライダー）がすべて見えなくなったら停止
+                mySwiperIO.autoplay.stop();
+                //mySwiperIO.slideToLoop(0); //先頭のスライドへ
+            }
+        });
+    }
+
+    //IntersectionObserver のオプション
+    const ioOptions = {
+        //全て見えるときと全て見えないときを検知するための閾値
+        threshold: [0, 1],
+        //監視領域のオフセット（見える手前100pxで表示する場合）
+        //rootMargin: '100px', 
+    }
+    //オブザーバーを生成
+    const observer = new IntersectionObserver(callback, ioOptions);
+    //監視対象の領域（スライダー）を取得 
+    const target = document.getElementById("swiperIO");
+    //オブザーバーに監視対象の領域（スライダー）を指定
+    observer.observe(target);
+
+
+    //要素を取得
+    const prev_button = document.querySelector('#swiperIO .swiper-button-prev');
+    const next_button = document.querySelector('#swiperIO .swiper-button-next');
+    //マウスオーバーイベント
+    target.addEventListener('mouseenter', () => {
+        // hover クラスを追加
+        prev_button.classList.add('hover');
+        next_button.classList.add('hover');
+    });
+    //マウスアウトイベント
+    target.addEventListener('mouseleave', () => {
+        // hover クラスを削除
+        prev_button.classList.remove('hover');
+        next_button.classList.remove('hover');
+    });
+</script>
+{% endblock %}

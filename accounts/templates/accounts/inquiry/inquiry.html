@@ -1,0 +1,100 @@
+{% extends "app/base.html" %}
+{% load widget_tweaks %}
+
+{% block title %}お問い合わせ{% endblock %}
+
+{% block headertitle %}お問い合わせ{% endblock %}
+
+{% block content %}
+
+<div class="wrapper">
+    <div class="Inquiry_box">
+
+        <div class="title_box">
+            <h1>Help</h1>
+            <p>ご利用方法とよくあるご質問について</p>
+        </div>
+
+        <div class="question_box">
+            <section class="sec_qa" id="QandA">
+                <div class="cp_qa">
+                    <div class="cp_actab">
+                        <input id="cp_tabfour022" type="checkbox" name="tabs">
+                        <div class="cp_plus">+</div>
+                        <label for="cp_tabfour022">会員登録方法について</label>
+                        <div class="cp_actab-content">会員登録方法<br>
+                            会員登録をされるお客様は会員登録のページから必要事項を記入し登録をお願いいたします。
+                        </div>
+                    </div>
+                    <div class="cp_actab">
+                        <input id="cp_tabfour021" type="checkbox" name="tabs">
+                        <div class="cp_plus">+</div>
+                        <label for="cp_tabfour021">セキュリティについて</label>
+                        <div class="cp_actab-content">
+                            ご利用方法とよくある質問について<br>
+                            
+                        </div>
+                    </div>
+                    <div class="cp_actab">
+                        <input id="cp_tabfour023" type="checkbox" name="tabs">
+                        <div class="cp_plus">+</div>
+                        <label for="cp_tabfour023">ご登録されたメールアドレス・パスワードについて</label>
+                        <div class="cp_actab-content">ご登録されたメールアドレス・パスワードは<br>
+                            factioのサービスのご利用、商品をご注文する際に必要となります。<br>
+                            ご登録されたメールアドレス・パスワードが無いとご利用・ご注文できません。<br>
+                            お忘れにならないようお願いいたします。<br>
+                        </div>
+                    </div>
+                    <div class="cp_actab">
+                        <input id="cp_tabfour024" type="checkbox" name="tabs">
+                        <div class="cp_plus">+</div>
+                        <label for="cp_tabfour024">ご登録された住所・メールアドレスが変わった場合</label>
+                        <div class="cp_actab-content">ご住所やメールアドレスなど、会員登録されている内容に変更がある場合は、マイページより登録内容の変更を行ってください。<br>
+                            変更が完了されると会員内容変更の確認メールをお送りいたします。
+                        </div>
+                    </div>
+                    <div class="cp_actab">
+                        <input id="cp_tabfour025" type="checkbox" name="tabs">
+                        <div class="cp_plus">+</div>
+                        <label for="cp_tabfour025">退会手続きについて</label>
+                        <div class="cp_actab-content">退会手続きについて<br>
+                            退会手続きをされると注文履歴などすべてのデータが削除されます。
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="inquiry_fields">
+            <h2>お問い合わせ</h2>
+            <p>ご自由にお問い合わせください。</p>
+            <form action="" method="POST" class="inquiry_fields_form">
+                {% csrf_token %}
+                <div class="form-control-group" id="inquiry_field_name">
+                    {% render_field form.first_name class="form-control" placeholder="姓" %}
+                    {% render_field form.last_name class="form-control" placeholder="名" %}
+                </div>
+                <div class="form-control-group">
+                    {% render_field form.email class="form-control" placeholder="メールアドレス" %}
+                </div>
+                <div class="form-control-group">
+                    {% render_field form.title class="form-control" placeholder="件名" %}
+                </div>
+                <div class="form-control-group">
+                    {% render_field form.summary class="form-control" placeholder="お問い合わせ内容" %}
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <label class="checkbox">
+                            {% render_field form.read_field value="1" %}
+                            内容を確認しました。
+                        </label>
+                    </div>
+                </div>
+                <input type="submit" value="送信" class="button is-primary" id="inquiry_send_button">
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

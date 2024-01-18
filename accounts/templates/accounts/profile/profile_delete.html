@@ -1,0 +1,18 @@
+{% extends "app/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="card card-profile my-5 mx-auto">
+    <div class="card-body">
+        <h2>アカウント削除</h2>
+        <h5>削除しますか?</h5>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="button mx-auto">
+                <button class="btn btn-lg btn-danger btn-block" type="submit">削除する</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

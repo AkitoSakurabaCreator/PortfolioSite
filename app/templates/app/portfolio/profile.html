@@ -1,0 +1,72 @@
+{% extends "app/base.html"%}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<div class="my-5">
+    <div class="title_box">
+        <h1>自己紹介</h1>
+        <p></p>
+    </div>
+    <div class="profile">
+        <div class="" id="profile_cards">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-profile">
+                        <div class="card-profile-area">
+                            <img class="card-profile-banner" src="{{ user_data.banner.url }}">
+                            <div class="card-profile-avatar">
+                                <img src="{{ user_data.avatar.url }}">
+                            </div>
+                        </div>
+                        <div class="card-profile-detail">
+                            <h3>{{ user_data.first_name }} {{ user_data.last_name }} (<small>{{ user_data.call_name }}</small>)</h3>
+                            <h4>活動名: {{ user_data.nick_name }}</h4>
+                            <div class="card-profile-detail-box">
+                                <p><a href="mailto:{{ user_data.email }}">{{ user_data.email }}</a></p>
+                                <p>{{ user_data.course }}</p>
+                                <p>{{ user_data.year|date:"Y/n/j" }} ({{ birthday }}歳)</p>
+                            </div>
+                        </div>
+                    </div>
+                    <h2 id="title">スキル</h2>
+                    <ul class="skill_list">
+                        {% for skill in skill_data %}
+                            <li>
+                                    {{ skill.name }}
+                                    {{ skill.year }}年
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <h2 id="title">資格</h2>
+                    <ul class="flex_row cert_list">
+                        {% for cert in cert_data %}
+                            <li>
+                                <div>
+                                    {% if cert.image %}
+                                        <img src="{{ cert.image.url }}">
+                                    {% endif %}
+                                    {{ cert.name }}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <h2 id="title">賞罰</h2>
+                    <ul class="flex_row reward_list">
+                        {% for reward in reward_data %}
+                            <li>
+                                <div>
+                                    {{ reward.name }}
+                                    <p>{{ reward.date|date:"Y/n" }}</p>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <h2 id="title">自己紹介</h2>
+                    <div class="card-text">
+                        <p>{{ user_data.text|linebreaksbr }}</p>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

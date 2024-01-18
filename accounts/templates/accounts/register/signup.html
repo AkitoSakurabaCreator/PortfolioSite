@@ -1,0 +1,47 @@
+{% extends "app/base.html" %}
+{% load widget_tweaks %}
+{% block title %}アカウント登録{% endblock %}
+
+{% block content %}
+    <div class="card card-auth my-5 mx-auto" id="account_body_area">
+        <div class="card-body" id="account_area">
+            <h5 class="card-title text-center">アカウント登録</h5>
+            <form method="POST" class="form-auth">
+                {% csrf_token %}
+                <div class="form-label-group" id="signup_field_name">
+                    {% render_field form.first_name class="form-control" placeholder="姓" %}
+                    {% render_field form.last_name class="form-control" placeholder="名" %}
+                </div>
+                <div class="form-label-group">
+                    {% render_field form.email class="form-control" placeholder="メールアドレス" %}
+                </div>
+                <div class="form-label-group">
+                    {% render_field form.password1 class="form-control" placeholder="パスワード" %}
+                </div>
+                <div class="form-label-group">
+                    {% render_field form.password2 class="form-control" placeholder="パスワード(確認)" %}
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <label class="checkbox">
+                            {% render_field form.read_terms value="1" %}
+                            <a href="{% url 'terms' %}">利用規約</a>に同意します
+                        </label>
+                    </div>
+                </div>
+                {% if form.errors %}
+                <ul class="error_message">
+                    {% for error in form.password1.errors %}
+                    <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <div class="text-center">
+                    <button class="btn btn-primary" type="submit">登録</button>
+                </div>
+                {% comment %} {% render_field field class="form-control is-invalid" %} {% endcomment %}
+            </form>
+        </div>
+    </div>
+{% endblock %}
